@@ -4,14 +4,14 @@
 
 <head>
 
-	<title>paper-scroll-header-panel: demo4</title>
+	<title>Huesosnya</title>
 
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
 	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
+	<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
 
 	<link rel="import" href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 	<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
@@ -90,14 +90,14 @@
 		<paper-button onclick="VK.Auth.login(authInfo);">Auth</paper-button>
 		<paper-button id="statusB">Status</paper-button>
 
-			<div class="content">
+		<div class="content">
 
-				<sample-content size="100"></sample-content>
+			<sample-content size="100"></sample-content>
 
-			</div>
-		</paper-scroll-header-panel>
+		</div>
+	</paper-scroll-header-panel>
 
-		<script>
+	<script>
 	    // custom transformation: scale header's title
 	    var title = document.querySelector('.title');
 	    addEventListener('paper-header-transform', function(e) {
@@ -107,12 +107,26 @@
 	    	Polymer.Base.transform('scale(' + scale + ') translateZ(0)', title);
 	    });
 
-		function authInfo(response) {
+	    var userId;
+	    function authInfo(response) {
 	    	if (response.session) {
 	    		alert('user: '+response.session.user.domain);
+	    		userId = response.session.mid;
 	    	} else {
 	    		alert('not auth');
 	    	}
+	    }
+
+	    statusB.onclick = function(){
+	    	VK.Api.call('friends.get', {user_id: userId, fields: 'domain'}, function(r) {
+	    		if(r.response) {
+	    			var names = '';
+	    			for (var i = 0; i < r.response.length; i++) {
+	    				names += r.response[i].domain + '\n';
+	    			}
+	    			alert(names);
+	    		}
+	    	});
 	    }
 	</script>
 </body>
