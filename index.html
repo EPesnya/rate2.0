@@ -6,12 +6,14 @@
 
 	<title>Huesosnya</title>
 
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
 	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
 
 	<link rel="import" href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 	<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
@@ -38,7 +40,6 @@
 				background: #fafafa;
 			};
 			--paper-drawer-panel-drawer-container:{
-				width: 300px;
 				border-right: 1px solid #e5e5e5;
 			};
 		}
@@ -70,6 +71,15 @@
 		}
 		.drawer-content nav div span {
 			padding-left: 8px;
+		}
+		#leftHui {
+			float: left;
+		}
+		#rightHui {
+			float: right;
+		}
+		#main {
+			margin: 50px;
 		}
 		paper-scroll-header-panel {
 			position: absolute;
@@ -106,13 +116,30 @@
 		.spacer {
 			@apply(--layout-flex);
 		}
+		.flex-horizontal-with-ratios {
+			@apply(--layout-horizontal);
+		}
+		.flex-horizontal-with-ratios div iron-image{
+			width: 200px;
+			height: 200px;
+			border-radius: 200px;
+			background-color: lightgray;
+		}
+		.flexchild {
+			@apply(--layout-flex-3);
+		}
+		.flex2child {
+			@apply(--layout-flex-3);
+		}
+		.flex3child {
+			@apply(--layout-flex-3);
+		}
 	</style>
 	
 	<script type="text/javascript">
 		VK.init({
 			apiId: 5148155
 		});
-		VK.Auth.login(authInfo);
 	</script>
 
 </head>
@@ -136,33 +163,22 @@
 				</nav>
 			</div>
 		</paper-header-panel>
-		<div main>
+		<div main id="main">
 			<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-			<div>Title</div>
-			<div> Main content... </div>
+			<div class="container flex-horizontal-with-ratios">
+				<div class="flexchild"><iron-image sizing="cover" id="leftImg" preload src="images/avatar.jpg" style="float: right;"></iron-image></div>
+				<div class="flex2child" style="text-align: center;">
+					Выбери хуесоса
+					<nav>
+						<paper-button style="background-color: #F44336">Левый</paper-button>
+						<paper-button style="background-color: #2196F3">Правый</paper-button>
+					</nav>
+					<paper-button id="statusB" style="background-color: #BDBDBD">Следующие</paper-button>
+				</div>
+				<div class="flex3child"><iron-image sizing="cover" id="rightImg" preload src="images/avatar.jpg" style="float: left;"></iron-image></div>
+			</div>
 		</div>
 	</paper-drawer-panel>
-
-	<!--<paper-scroll-header-panel condenses>
-
-		<paper-toolbar class="tall">
-			<paper-icon-button icon="arrow-back"></paper-icon-button>
-			<div class="spacer"></div>
-			<paper-icon-button icon="search"></paper-icon-button>
-			<paper-icon-button icon="more-vert"></paper-icon-button>
-			<div class="bottom title">Title</div>
-		</paper-toolbar>
-
-		<div id="vk_api_transport"></div>
-		<paper-button onclick="VK.Auth.login(authInfo);">Auth</paper-button>
-		<paper-button id="statusB">Status</paper-button>
-
-		<div class="content">
-
-			<sample-content id="setF" size="100" user="1"></sample-content>
-
-		</div>
-	</paper-scroll-header-panel>-->
 
 	<script>
 	    // custom transformation: scale header's title
@@ -175,9 +191,9 @@
 	    });
 
 	    var userId;
+		VK.Auth.login(authInfo);
 	    function authInfo(response) {
 	    	if (response.session) {
-	    		alert('user: '+response.session.user.domain);
 	    		userId = response.session.mid;
 	    		//setF.user = userId;
 	    	} else {
@@ -186,16 +202,16 @@
 	    }
 
 	    statusB.onclick = function(){
-	    	VK.Api.call('friends.get', {user_id: userId, fields: 'domain'}, function(r) {
-	    		if(r.response) {
-	    			var names = '';
-	    			setF.size = r.response.length;
-	    			for (var i = 0; i < r.response.length; i++) {
-	    				names += r.response[i].domain + '\n';
-	    			}
-	    			alert(names);
-	    		}
-	    	});
+	    	VK.Api.call('friends.get', {user_id: userId, fields: 'domain, photo_200_orig'}, function(r) {
+	    		if(r.response) { 
+	    			var id1 = Math.round(Math.random() * r.response.length); 
+	    			var id2 = Math.round(Math.random() * r.response.length); 
+	    			while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+	    			console.log(id1 + ' ' + id2); 
+	    			leftImg.src = r.response[id1].photo_200_orig;
+	    			rightImg.src = r.response[id2].photo_200_orig;
+        }
+    });
 	    	
 	    }
 	</script>
