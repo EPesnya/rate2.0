@@ -11,6 +11,8 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
 	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
 	<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
 
 	<link rel="import" href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
@@ -26,6 +28,16 @@
 	<link rel="import" href="html_components/sample-content.html">
 
 	<link rel="import" href="bower_components/paper-styles/demo.css">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 
 	<style is="custom-style">
 		paper-scroll-header-panel {
@@ -63,6 +75,10 @@
 		.spacer {
 			@apply(--layout-flex);
 		}
+		#hu1, #hu2{
+			text-align: center;
+			padding: 2%;	
+		}
 	</style>
 	
 	<script type="text/javascript">
@@ -83,16 +99,35 @@
 			<div class="spacer"></div>
 			<paper-icon-button icon="search"></paper-icon-button>
 			<paper-icon-button icon="more-vert"></paper-icon-button>
-			<div class="bottom title">Title</div>
+			<div class="bottom title">Хуесосня</div>
 		</paper-toolbar>
 
 		<div id="vk_api_transport"></div>
-		<paper-button onclick="VK.Auth.login(authInfo);">Auth</paper-button>
-		<paper-button id="statusB">Status</paper-button>
+		<paper-button onclick="VK.Auth.login(authInfo);">Авторизоваться!</paper-button>
+		<paper-button id="statusB">Получить виртуальных друзей вконтакте</paper-button>
 
 		<div class="content">
 
-			<sample-content size="100"></sample-content>
+			<div style="width: 80%; height: 20%; background-color:#252355; color: white; margin: 0 auto;">
+				<div class="container-fluid" style="vertical-align: center; text-align:center;">
+					<div class="row">
+						<h2 style="margin-bottom: 0;">Выбери одного</h2>
+						<p style="margin-top: 0;">Верши судьбы! Рви души!</p>
+					</div>
+					<div class="row" style="min-height: 200px;">
+						<div class="col-xs-4" id="hu1" style="float:left;"></div>
+						<div class="col-xs-4">
+							<div class="btn-group" style="margin: auto;">
+								<button class="btn">Левый</button>
+								<button class="btn">Скип</button>
+								<button class="btn">Правый</button>
+							</div>
+						</div>
+						<div class="col-xs-4" id="hu2"></div>
+					</div>
+				</div>
+			</div>
+			<sample-content size="0"></sample-content>
 
 		</div>
 	</paper-scroll-header-panel>
@@ -110,7 +145,6 @@
 	    var userId;
 	    function authInfo(response) {
 	    	if (response.session) {
-	    		alert('user: '+response.session.user.domain);
 	    		userId = response.session.mid;
 	    	} else {
 	    		alert('not auth');
@@ -120,11 +154,29 @@
 	    statusB.onclick = function(){
 	    	VK.Api.call('friends.get', {user_id: userId, fields: 'domain'}, function(r) {
 	    		if(r.response) {
-	    			var names = '';
-	    			for (var i = 0; i < r.response.length; i++) {
-	    				names += r.response[i].domain + '\n';
-	    			}
-	    			alert(names);
+	    			var photos = [];
+	    			var id1 = Math.round(Math.random() * r.response.length);
+	    			var id2 = Math.round(Math.random() * r.response.length);
+	    			while(id2 === id1) id2 = Math.round(Math.random() * r.response.length);
+	    			console.log(id1 + ' ' + id2);
+	    			VK.Api.call('users.get', {user_ids: r.response[id1].domain, fields: 'photo_100'}, function(rr){
+	    				$('#hu1').text("");
+						$('#hu1').append("<img style=\"border-radius: 50px;\" src=\"" + rr.response[0].photo_100 + "\">");
+						$('#hu1').append("<div>" + rr.response[0].first_name + ' ' + rr.response[0].last_name + "</div>");
+					});
+	    			VK.Api.call('users.get', {user_ids: r.response[id2].domain, fields: 'photo_100'}, function(rr){
+	    				$('#hu2').text("");
+						$('#hu2').append("<img style=\"border-radius: 50px;\" src=\"" + rr.response[0].photo_100 + "\">");
+						$('#hu2').append("<div>" + rr.response[0].first_name + ' ' + rr.response[0].last_name + "</div>");
+					});
+
+	    			/*for (var i = 0; i < 6; i++) {
+    					setTimeout(VK.Api.call('users.get', {user_ids: r.response[i].domain, fields: 'photo_100'}, function(rr){
+    						console.log(rr);
+    						$('#content').append("<img style=\"border-radius: 50px;\" src=\"" + rr.response[0].photo_100 + "\">");
+    					}), 100);*/
+	    				//photos[i] = r.response[i].photo_200;
+	    			//alert(names);
 	    		}
 	    	});
 	    }
