@@ -61,7 +61,6 @@
 		}
 		.drawer-content {
 			position: relative;
-			padding: 8px;
 		}
 		.drawer-content paper-card {
 			--paper-card:{
@@ -78,7 +77,6 @@
 			float: left;
 		}
 		.drawer-content nav div {
-			padding: 8px 32px;
 			color: #424242;
 		}
 		.drawer-content nav div span {
@@ -146,6 +144,27 @@
 		.flex3child {
 			@apply(--layout-flex-3);
 		}
+		#rightImg, #leftImg {
+			height: 200px; border-radius: 100px;
+		}
+		#userAvatar {
+			border-radius: 50px;
+			float: left;
+		}
+		#user-info {
+			padding: 8px;
+			background-color: #90CAF9;
+		}
+		.col-xs-6 {
+			text-align: center;
+		}
+		.row {
+			text-align: center;
+			min-height: 150px;
+		}
+		#buttons {
+			margin: auto 0 ;
+		}
 	</style>
 	
 	<script type="text/javascript">
@@ -164,10 +183,11 @@
 				<div>Huesosnya</div>
 			</paper-toolbar>
 			<div class="drawer-content"> 
-				<paper-card>
-					<iron-image sizing="cover" preload src="images/avatar.jpg"></iron-image>
-					<div class="card-content">Some content</div>
-				</paper-card>
+				<div id="user-info">
+					<iron-image id="userAvatar" preload src="images/avatar.jpg"></iron-image>
+					<div id="userName" class="card-content">Some content</div>
+					<div style="clear: both;"></div>
+				</div>
 				<hr>
 				<nav>
 					<div><iron-icon icon="icons:language"></iron-icon><span>Global rating</span></div>
@@ -177,6 +197,29 @@
 		</paper-header-panel>
 		<div main id="main">
 			<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+			<div class="container-fluid">
+				<div class="row">
+					<div id="buttons">
+						Выбери хуесоса
+						<nav>
+							<paper-button style="background-color: #F44336">Левый</paper-button>
+							<paper-button id="statusB" style="background-color: #BDBDBD">Следующие</paper-button>
+							<paper-button style="background-color: #2196F3">Правый</paper-button>
+						</nav>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="flexchild"><iron-image id="leftImg" preload src="images/avatar.jpg" style="float: right;"></iron-image></div>
+						<p id="leftName"></p>
+					</div>
+					<div class="col-xs-6">
+						<div class="flex3child"><iron-image id="rightImg" preload src="images/avatar.jpg" style="float: left;"></iron-image></div>
+						<p id="rightName"></p>
+					</div>
+				</div>
+			</div>
+			<!--
 			<div class="container flex-horizontal-with-ratios">
 				<div class="flexchild"><iron-image sizing="cover" id="leftImg" preload src="images/avatar.jpg" style="float: right;"></iron-image></div>
 				<div class="flex2child" style="text-align: center;">
@@ -189,6 +232,7 @@
 				</div>
 				<div class="flex3child"><iron-image sizing="cover" id="rightImg" preload src="images/avatar.jpg" style="float: left;"></iron-image></div>
 			</div>
+			-->
 		</div>
 	</paper-drawer-panel>
 
@@ -202,30 +246,39 @@
 	    	Polymer.Base.transform('scale(' + scale + ') translateZ(0)', title);
 	    });
 
+
+	    var generatePair = function(){
+	    	VK.Api.call('friends.get', {user_id: userId, fields: 'domain, photo_200'}, function(r) {
+	    		if(r.response) { 
+	    			var id1 = Math.round(Math.random() * r.response.length); 
+	    			var id2 = Math.round(Math.random() * r.response.length); 
+	    			while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+	    			leftImg.src = r.response[id1].photo_200;
+	    			rightImg.src = r.response[id2].photo_200;
+	    			$('#leftName').text(r.response[id1].first_name + ' ' + r.response[id1].last_name);
+	    			$('#rightName').text(r.response[id2].first_name + ' ' + r.response[id2].last_name);
+	    			
+        		}
+    		});
+	    }
+
 	    var userId;
 		VK.Auth.login(authInfo);
 	    function authInfo(response) {
 	    	if (response.session) {
 	    		userId = response.session.mid;
-	    		//setF.user = userId;
+	    		VK.Api.call('users.get', {user_id: userId, fields: 'photo_100'}, function(r)
+	    		{
+	    			userAvatar.src = r.response[0].photo_100;
+	    			$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
+	    		});
+	    		generatePair();
 	    	} else {
 	    		alert('not auth');
 	    	}
 	    }
 
-	    statusB.onclick = function(){
-	    	VK.Api.call('friends.get', {user_id: userId, fields: 'domain, photo_200_orig'}, function(r) {
-	    		if(r.response) { 
-	    			var id1 = Math.round(Math.random() * r.response.length); 
-	    			var id2 = Math.round(Math.random() * r.response.length); 
-	    			while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
-	    			console.log(id1 + ' ' + id2); 
-	    			leftImg.src = r.response[id1].photo_200_orig;
-	    			rightImg.src = r.response[id2].photo_200_orig;
-        }
-    });
-	    	
-	    }
+	    statusB.onclick = generatePair;
 	</script>
 </body>
 </html>
