@@ -36,13 +36,27 @@
           type: Number,
           value: 0,
           observer: 'sizeChanged'
+        },
+        user: {
+          type: Number,
+          value: 1
         }
       },
       sizeChanged: function() {
         var html = '';
-        for (var i = 0; i < this.size; i++) {
+        var photos = [];
+        var len = 10;
+        VK.Api.call('friends.get', {user_id: 1, fields: 'domain,photo_100'}, function(r) {
+          if(r.response) {
+            len = r.response.length;
+            for (var i = 0; i < r.response.length; i++) {
+              photos.push(r.response[i].photo_100);
+            }
+          }
+        });
+        for (var i = 0; i < len; i++) {
           html += '<paper-card style="padding: 16px; margin: 16px; background-color: #fff; color: #555;">' +
-            '<div style="display: inline-block; height: 64px; width: 64px; border-radius: 50%; background: #ddd; line-height: 64px; font-size: 30px; color: #666; text-align: center;">'+ randomLetter() + '</div>' +
+            '<div style="display: inline-block; height: 64px; width: 64px; border-radius: 50%; background: ' + photos[i] + '; line-height: 64px; font-size: 30px; color: #666; text-align: center;">'+ randomLetter() + '</div>' +
             '<div style="font-size: 22px; padding: 8px 0 16px; color: #888;">' + randomString() + '</div>' +
             '<div style="font-size: 16px; padding-bottom: 8px;">' + randomString() + '</div>' +
             '<div style="font-size: 12px;">' + randomString() + '</div>' +

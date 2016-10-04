@@ -22,12 +22,55 @@
 	<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="bower_components/paper-button/paper-button.html">
 	<link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
+	<link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
 
 	<link rel="import" href="html_components/sample-content.html">
 
 	<link rel="import" href="bower_components/paper-styles/demo.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 	<style is="custom-style">
+		html {
+			font-family: 'Roboto', sans-serif;
+		}
+		paper-drawer-panel {
+			--paper-drawer-panel-main-container: {
+				background: #fafafa;
+			};
+			--paper-drawer-panel-drawer-container:{
+				width: 300px;
+				border-right: 1px solid #e5e5e5;
+			};
+		}
+		paper-drawer-panel paper-toolbar {
+			--paper-toolbar-background: #E91E63;
+			font-size: 2em;
+		}
+		.drawer-content {
+			position: relative;
+			padding: 8px;
+		}
+		.drawer-content paper-card {
+			--paper-card:{
+				width: 100%;
+			};
+			--paper-card-background-color: #90CAF9;
+		}
+		.drawer-content paper-card iron-image {
+			margin: 12px 12px;
+			width: 80px;
+			height: 80px;
+			border-radius: 80px;
+			background-color: lightgray;
+			float: left;
+		}
+		.drawer-content nav div {
+			padding: 8px 32px;
+			color: #424242;
+		}
+		.drawer-content nav div span {
+			padding-left: 8px;
+		}
 		paper-scroll-header-panel {
 			position: absolute;
 			top: 0;
@@ -69,14 +112,38 @@
 		VK.init({
 			apiId: 5148155
 		});
+		VK.Auth.login(authInfo);
 	</script>
 
 </head>
 
 
 <body>
+	<paper-drawer-panel drawer-width="300px">
+		<paper-header-panel drawer>
+			<paper-toolbar>
+				<div>Huesosnya</div>
+			</paper-toolbar>
+			<div class="drawer-content"> 
+				<paper-card>
+					<iron-image sizing="cover" preload src="images/avatar.jpg"></iron-image>
+					<div class="card-content">Some content</div>
+				</paper-card>
+				<hr>
+				<nav>
+					<div><iron-icon icon="icons:language"></iron-icon><span>Global rating</span></div>
+					<div><iron-icon icon="icons:cached"></iron-icon><span>Local rating</span></div>
+				</nav>
+			</div>
+		</paper-header-panel>
+		<div main>
+			<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+			<div>Title</div>
+			<div> Main content... </div>
+		</div>
+	</paper-drawer-panel>
 
-	<paper-scroll-header-panel condenses>
+	<!--<paper-scroll-header-panel condenses>
 
 		<paper-toolbar class="tall">
 			<paper-icon-button icon="arrow-back"></paper-icon-button>
@@ -92,10 +159,10 @@
 
 		<div class="content">
 
-			<sample-content size="100"></sample-content>
+			<sample-content id="setF" size="100" user="1"></sample-content>
 
 		</div>
-	</paper-scroll-header-panel>
+	</paper-scroll-header-panel>-->
 
 	<script>
 	    // custom transformation: scale header's title
@@ -112,6 +179,7 @@
 	    	if (response.session) {
 	    		alert('user: '+response.session.user.domain);
 	    		userId = response.session.mid;
+	    		//setF.user = userId;
 	    	} else {
 	    		alert('not auth');
 	    	}
@@ -121,12 +189,14 @@
 	    	VK.Api.call('friends.get', {user_id: userId, fields: 'domain'}, function(r) {
 	    		if(r.response) {
 	    			var names = '';
+	    			setF.size = r.response.length;
 	    			for (var i = 0; i < r.response.length; i++) {
 	    				names += r.response[i].domain + '\n';
 	    			}
 	    			alert(names);
 	    		}
 	    	});
+	    	
 	    }
 	</script>
 </body>
