@@ -220,17 +220,19 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-6">
-						<div class="flexchild"><iron-image id="leftImg" preload src=""></iron-image></div>
+						<div class="flexchild"><iron-image onClick="chooseLeft()" id="leftImg" preload src=""></iron-image></div>
 						<a id="leftName"></a>
 					</div>
 					<div class="col-xs-6">
-						<div class="flex3child"><iron-image id="rightImg" preload src=""></iron-image></div>
+						<div class="flex3child"><iron-image onClick="chooseRight()" id="rightImg" preload src=""></iron-image></div>
 						<a id="rightName"></a>
 					</div>
 				</div>
 			</div>
 	</div>
 	<script>
+		var vkid1;
+		var vkid2;
 	    var title = document.querySelector('.title');
 	    addEventListener('paper-header-transform', function(e) {
 	    	var d = e.detail;
@@ -263,6 +265,8 @@
 						console.log(res);
 						var id1 = Math.round(Math.random() * res.response.length); 
 						var id2 = Math.round(Math.random() * res.response.length); 
+						vkid1 = res.response[id1].uid;
+						vkid2 = res.response[id2].uid;
 						while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
 						leftImg.src = res.response[id1].photo_400_orig; 
 						rightImg.src = res.response[id2].photo_400_orig; 
@@ -345,6 +349,13 @@
 	    }
 
 	    statusB.onclick = generatePair;
+
+	    function chooseLeft() {
+	    	$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {alert(data);});
+	    }
+	    function chooseRight() {
+	    	$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {alert(data);});
+	    }
 	</script>
 </body>
 </html>
