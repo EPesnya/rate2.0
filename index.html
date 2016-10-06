@@ -33,6 +33,9 @@
 
 	<link rel="import" href="bower_components/paper-styles/demo.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Eczar:800" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Dosis:300" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet">
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -41,7 +44,11 @@
 
 	<style is="custom-style">
 		html {
-			font-family: 'Roboto', sans-serif;
+			font-family: 'Catamaran', sans-serif;
+		}
+		body { 
+			font-family: 'Catamaran'; 
+			background-color: #f5cedb;
 		}
 		paper-drawer-panel {
 			--paper-drawer-panel-main-container: {
@@ -51,7 +58,7 @@
 				border-right: 1px solid #e5e5e5;
 			};
 		}
-		paper-drawer-panel paper-toolbar {
+		paper-toolbar {
 			--paper-toolbar-background: #E91E63;
 			font-size: 2em;
 		}
@@ -138,9 +145,18 @@
 		#rightImg, #leftImg {
 			height: 400px;
 			border-radius: 200px;
+			left: 0;
+			opacity: 1;
+			position: relative;
+			-webkit-transition: left 1s ease-out 0.5s;
+			-moz-transition: left 1s ease-out 0.5s;
+			-o-transition: left 1s ease-out 0.5s;
+			transition: left 1s ease-out 0.5s;
 		}
 		#userName {
 			vertical-align: middle;
+			font-family: 'Catamaran';
+			font-size: 0.7em;
 		}
 		#userAvatar {
 			border-radius: 50px;
@@ -153,7 +169,6 @@
 		.row {
 			text-align: center;
 			padding-top: 16px;
-			padding-bottom: 16px;
 		}
 		#buttons {
 			margin: auto 0 ;
@@ -162,11 +177,9 @@
 			width: 500px;
 		}
 		b {
-			font-size: 36px;
-			opacity: .87;
+			font-size: 54px;
 		}
 		paper-toolbar {
-			box-shadow: 0 4px 6px rgba(0,0,0,.4);
 		}
 		.flex-horizontal {
 			@apply(--layout-horizontal);
@@ -176,6 +189,18 @@
 		}
 		.vertical-centred {
 			@apply(--layout-self-center);
+		}
+		a {
+			font-size: 20px;
+			color: black;
+			opacity: .87;
+		}
+		.menuLinks {
+			font-size: 16px;
+		}
+		.moveLeft {
+			opacity: 0.5;
+			left: -100px;
 		}
 	</style>
 	
@@ -213,22 +238,31 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div id="buttons">
-							<b>Выбери хуесоса</b>
-							<nav>
-								<paper-button id="statusB" style="background-color: #BDBDBD">Следующие</paper-button>
-							</nav>
+							<b style="line-height: 54px; font-family: 'Eczar';">Choose</b><br> 
+							<b style="font-family: 'Catamaran'; font-size:16px; position: relative; top: -7px;">THE MOST</b><br>
+							<b style="text-decoration: underline;font-size:42px; position: relative; top: -7px; line-height: 32px; font-family: 'Eczar';">husesosious</b>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-lg-5">
+				<div class="row" style="position: relative; top: -30px;">
+					<div class="col-md-5">
 						<div class="flexchild"><iron-image onClick="chooseLeft()" id="leftImg" preload src=""></iron-image></div>
 						<a id="leftName"></a>
 					</div>
-					<div class="col-lg-2">
-						<paper-checkbox>Show ratings</paper-checkbox>
+					<div style="height: 350px; position:relative; top: 16px;" class="col-md-2">
+						<paper-button id="statusB" style="font-family: 'Catamaran'; margin-top:15px;background-color: #3f51b5; color: #fff;">Skip</paper-button><br>
+						<div style="font-family: 'Catamaran'; margin-top:15px; margin-bottom:15px; text-align: left;">
+							<paper-checkbox>Show ratings</paper-checkbox>
+							<paper-checkbox>Rate people you may know</paper-checkbox>
+						</div>
+						<hr style="margin-bottom:15px;">
+
+						<div style="font-family: 'Catamaran'; margin-top:15px; margin-bottom:15px; text-align: left;">
+							<iron-icon icon="icons:language"></iron-icon><a class="menuLinks" href="#"> Global rating</a><br>
+							<iron-icon icon="icons:cached"></iron-icon><a class="menuLinks" href="#"> Local rating</a>
+						</div>
 					</div>
-					<div class="col-lg-5">
+					<div class="col-md-5">
 						<div class="flex3child"><iron-image onClick="chooseRight()" id="rightImg" preload src=""></iron-image></div>
 						<a id="rightName"></a>
 					</div>
@@ -247,32 +281,18 @@
 	    });
 
 
-				var generatePair = function(){ 
-					VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-						if(r.response) { 
-							VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-								function onAjaxSuccess(data) { 
-									alert(data); 
-								} 
-								console.log(res);
-								var id1 = Math.round(Math.random() * res.response.length); 
-								var id2 = Math.round(Math.random() * res.response.length); 
-								vkid1 = id1;
-								vkid2 = id2;
-								while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
-								leftImg.src = res.response[id1].photo_400_orig; 
-								rightImg.src = res.response[id2].photo_400_orig; 
-								$('#leftName').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
-								$('#leftName').attr("href", "https://vk.com/" + res.response[id1].domain);
-								$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
-								$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
-							});
+		var generatePair = function(){ 
+			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+				if(r.response) { 
+					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
+						function onAjaxSuccess(data) { 
 						} 
 						var id1 = Math.round(Math.random() * res.response.length); 
 						var id2 = Math.round(Math.random() * res.response.length); 
-						vkid1 = res.response[id1].uid;
-						vkid2 = res.response[id2].uid;
+						vkid1 = id1;
+						vkid2 = id2;
 						while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+						$('#leftImg').addClass("moveLeft");
 						leftImg.src = res.response[id1].photo_400_orig; 
 						rightImg.src = res.response[id2].photo_400_orig; 
 						$('#leftName').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
@@ -280,60 +300,71 @@
 						$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
 						$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
 					});
-				}
+				} 
+				var id1 = Math.round(Math.random() * res.response.length); 
+				var id2 = Math.round(Math.random() * res.response.length); 
+				vkid1 = res.response[id1].uid;
+				vkid2 = res.response[id2].uid;
+				while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+				leftImg.src = res.response[id1].photo_400_orig; 
+				$('#leftName').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
+				$('#leftName').attr("href", "https://vk.com/" + res.response[id1].domain);
+				rightImg.src = res.response[id2].photo_400_orig; 
+				$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
+				$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
+			});
+		}
 
-				var init = function(response) {
-					userId = response.session.mid;
-					VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
-					{
-						userAvatar.src = r.response[0].photo_50;
-						$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
+		var init = function(response) {
+			userId = response.session.mid;
+			VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
+			{
+				userAvatar.src = r.response[0].photo_50;
+				$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
+			});
+			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+				if(r.response) { 
+					var s;
+					for(var i = 0; i < r.response.length; i++) {
+						s += r.response[i].uid + ',';
+					}
+					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
+						$.post("users.php", { resp: res.response }, function(data) {});
 					});
-					VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-						if(r.response) { 
-							console.log(r);
-							var s;
-							for(var i = 0; i < r.response.length; i++) {
-								s += r.response[i].uid + ',';
-							}
-							VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-								$.post("users.php", { resp: res.response }, function(data) {alert(data);});
-							});
-						} 
-					});	
+				} 
+			});	
 
-				};
+		};
 
-				var userId;
-				VK.Auth.getLoginStatus(function(response){
-					if (response.session){
-						alert("asd");
-						init(response);
-					}
-					else {
-						alert("asd");
-						VK.Auth.login(authInfo);
-					}
-				});
-				function authInfo(response) {
-					if (response.session) {
-						init(response);
-					} else {
-						alert('Unable to authorize');
-					}
-				}
+		var userId;
+		VK.Auth.getLoginStatus(function(response){
+			if (response.session){
+				init(response);
+			}
+			else {
+				VK.Auth.login(authInfo);
+			}
+		});
+		function authInfo(response) {
+			if (response.session) {
+				init(response);
+			} else {
+				alert('Unable to authorize');
+			}
+		}
 
 	    statusB.onclick = generatePair;
 
 	    function chooseLeft() {
-	    	$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {alert(data);});
+	    	$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {});
 	    	generatePair();
 	    }
 	    function chooseRight() {
-	    	$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {alert(data);});
+	    	$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {});
 	    	generatePair();
 	    }
 	</script>
 </body>
+
 </html>
 
