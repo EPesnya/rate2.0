@@ -13,7 +13,7 @@
 
 	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"
-        type="text/javascript"></script>
+	type="text/javascript"></script>
 	<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
 
@@ -27,6 +27,7 @@
 	<link rel="import" href="bower_components/paper-button/paper-button.html">
 	<link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
 	<link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
+	<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
 
 	<link rel="import" href="html_components/sample-content.html">
 
@@ -168,10 +169,10 @@
 			box-shadow: 0 4px 6px rgba(0,0,0,.4);
 		}
 		.flex-horizontal {
-		    @apply(--layout-horizontal);
+			@apply(--layout-horizontal);
 		}
 		.flexchild {
-		    @apply(--layout-flex);
+			@apply(--layout-flex);
 		}
 		.vertical-centred {
 			@apply(--layout-self-center);
@@ -209,21 +210,25 @@
 			</div>
 			<hr>-->
 			<div main id="main">
-			<div class="container-fluid">
-				<div class="row">
-					<div id="buttons">
-						<b>Выбери хуесоса</b>
-						<nav>
-							<paper-button id="statusB" style="background-color: #BDBDBD">Следующие</paper-button>
-						</nav>
+				<div class="container-fluid">
+					<div class="row">
+						<div id="buttons">
+							<b>Выбери хуесоса</b>
+							<nav>
+								<paper-button id="statusB" style="background-color: #BDBDBD">Следующие</paper-button>
+							</nav>
+						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-6">
+					<div class="col-lg-5">
 						<div class="flexchild"><iron-image onClick="chooseLeft()" id="leftImg" preload src=""></iron-image></div>
 						<a id="leftName"></a>
 					</div>
-					<div class="col-xs-6">
+					<div class="col-lg-2">
+						<paper-checkbox>Show ratings</paper-checkbox>
+					</div>
+					<div class="col-lg-5">
 						<div class="flex3child"><iron-image onClick="chooseRight()" id="rightImg" preload src=""></iron-image></div>
 						<a id="rightName"></a>
 					</div>
@@ -242,27 +247,27 @@
 	    });
 
 
-	    var generatePair = function(){ 
-			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-				if(r.response) { 
-					console.log(r);
-					var s;
-					for(var i = 0; i < r.response.length; i++) {
-						s += r.response[i].uid + ',';
-					}
-					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-						for(var i = 0; i < r.response.length; i++)
-						{}
-						$.post("phps/users.php", { 
-								id: res.response[0].id, 
-								photo: res.response[0].photo_400_orig,
-								first_name: res.response[0]
-							}); 
-						function onAjaxSuccess(data) 
-						{ 
-							alert(data); 
+				var generatePair = function(){ 
+					VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+						if(r.response) { 
+							VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
+								function onAjaxSuccess(data) { 
+									alert(data); 
+								} 
+								console.log(res);
+								var id1 = Math.round(Math.random() * res.response.length); 
+								var id2 = Math.round(Math.random() * res.response.length); 
+								vkid1 = id1;
+								vkid2 = id2;
+								while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+								leftImg.src = res.response[id1].photo_400_orig; 
+								rightImg.src = res.response[id2].photo_400_orig; 
+								$('#leftName').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
+								$('#leftName').attr("href", "https://vk.com/" + res.response[id1].domain);
+								$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
+								$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
+							});
 						} 
-						console.log(res);
 						var id1 = Math.round(Math.random() * res.response.length); 
 						var id2 = Math.round(Math.random() * res.response.length); 
 						vkid1 = res.response[id1].uid;
@@ -274,87 +279,59 @@
 						$('#leftName').attr("href", "https://vk.com/" + res.response[id1].domain);
 						$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
 						$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
-
 					});
-				} 
-			}); 
-		}
+				}
 
-		var init = function(response) {
-			userId = response.session.mid;
-    		VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
-    		{
-    			userAvatar.src = r.response[0].photo_50;
-    			$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
-    		});
-    		VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-				if(r.response) { 
-					console.log(r);
-					var s;
-					for(var i = 0; i < r.response.length; i++) {
-						s += r.response[i].uid + ',';
+				var init = function(response) {
+					userId = response.session.mid;
+					VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
+					{
+						userAvatar.src = r.response[0].photo_50;
+						$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
+					});
+					VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+						if(r.response) { 
+							console.log(r);
+							var s;
+							for(var i = 0; i < r.response.length; i++) {
+								s += r.response[i].uid + ',';
+							}
+							VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
+								$.post("users.php", { resp: res.response }, function(data) {alert(data);});
+							});
+						} 
+					});	
+
+				};
+
+				var userId;
+				VK.Auth.getLoginStatus(function(response){
+					if (response.session){
+						alert("asd");
+						init(response);
 					}
-					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-						/*
-						var t_id = [];
-						var t_first_name = [];
-						var t_last_name = [];
-						var t_photo = [];
-						var t_rating = [];
-						var t_domain = [];
-						for(var i = 0; i < r.response.length; i++) {
-							t_id[i] = res.response[i].id;
-							t_first_name[i] = res.response[i].first_name;
-							t_last_name[i] = res.response[i].last_name;
-							t_photo[i] = res.response[i].photo_400_orig;
-							t_rating[i] = 1400;
-							t_domain[i] = res.response[i].domain;
-						}
-						$.post("users.php", { 
-								id: t_id, 
-								photo: t_photo,
-								first_name: t_first_name,
-								last_name: t_last_name,
-								rating: t_rating,
-								domain: t_domain
-							}, onAjaxSuccess); 
-						function onAjaxSuccess(data) 
-						{ 
-							alert(data); 
-						} */
-						$.post("users.php", { resp: res.response }, function(data) {alert(data);});
-					});
-				} 
-			});	
-
-		};
-
-	    var userId;
-	    VK.Auth.getLoginStatus(function(response){
-	    	if (response.session){
+					else {
 						alert("asd");
-	    		init(response);
-	    	}
-	    	else {
-						alert("asd");
-				VK.Auth.login(authInfo);
-	    	}
-	    });
-	    function authInfo(response) {
-	    	if (response.session) {
-	    		init(response);
-	    	} else {
-	    		alert('Unable to authorize');
-	    	}
-	    }
+						VK.Auth.login(authInfo);
+					}
+				});
+				function authInfo(response) {
+					if (response.session) {
+						init(response);
+					} else {
+						alert('Unable to authorize');
+					}
+				}
 
 	    statusB.onclick = generatePair;
 
 	    function chooseLeft() {
 	    	$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {alert(data);});
+	    	generatePair();
 	    }
 	    function chooseRight() {
 	    	$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {alert(data);});
+	    	generatePair();
 	    }
 	</script>
 </body>
