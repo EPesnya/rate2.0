@@ -29,7 +29,6 @@
 	<link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
 	<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
 
-	<link rel="import" href="html_components/sample-content.html">
 
 	<link rel="import" href="bower_components/paper-styles/demo.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -144,6 +143,7 @@
 		}
 		#rightImg, #leftImg {
 			height: 400px;
+			width: 400px;
 			border-radius: 200px;
 			left: 0;
 			opacity: 1;
@@ -315,34 +315,25 @@
 		var generatePair = function(){ 
 			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
 				if(r.response) { 
-					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-						function onAjaxSuccess(data) { 
-						} 
+					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain, photo_200'}, function(res) { 
 						var id1 = Math.round(Math.random() * res.response.length); 
 						var id2 = Math.round(Math.random() * res.response.length); 
 						vkid1 = id1;
 						vkid2 = id2;
 						while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
 						$('#leftImg').addClass("moveLeft");
-						leftImg.src = res.response[id1].photo_400_orig; 
+						if (res.response[id1].photo_400_orig)
+						leftImg.src = res.response[id1].photo_400_orig;
+						else leftImg.src = res.response[id1].photo_200;
+						if (res.response[id1].photo_400_orig) 
 						rightImg.src = res.response[id2].photo_400_orig; 
+						else leftImg.src = res.response[id2].photo_200;
 						$('#leftName').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
 						$('#leftName').attr("href", "https://vk.com/" + res.response[id1].domain);
 						$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
 						$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
 					});
 				} 
-				var id1 = Math.round(Math.random() * res.response.length); 
-				var id2 = Math.round(Math.random() * res.response.length); 
-				vkid1 = res.response[id1].uid;
-				vkid2 = res.response[id2].uid;
-				while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
-				leftImg.src = res.response[id1].photo_400_orig; 
-				$('#leftName').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
-				$('#leftName').attr("href", "https://vk.com/" + res.response[id1].domain);
-				rightImg.src = res.response[id2].photo_400_orig; 
-				$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
-				$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
 			});
 		}
 
@@ -373,13 +364,13 @@
 				init(response);
 			}
 			else {
-				$("#login-screen").css("display", "blok");
+				$("#login-screen").show();
 			}
 		});
 		function authInfo(response) {
 			if (response.session) {
 				init(response);
-				$("#login-screen").css("display", "none");
+				$("#login-screen").hide();
 			} else {
 				alert('Unable to authorize');
 			}

@@ -1,9 +1,9 @@
 <?
 
-$hostname = "localhost";
-$username = "epesnya";
-$password = "qwerty123";
-$dbName = "testbd";
+$hostname = "mysql.hostinger.ru";
+$username = "u553691087_evg";
+$password = "WKA0dhPXoO";
+$dbName = "u553691087_users";
 
 $response = $_POST['resp'];
 $userstable = "users";
