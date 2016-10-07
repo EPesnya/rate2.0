@@ -202,6 +202,31 @@
 			opacity: 0.5;
 			left: -100px;
 		}
+		#login-screen {
+			display: none;
+			font-family: 'Roboto', sans-serif;
+			font-size: 2.5em;
+			color: #757575;
+			position: fixed;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			background: #FAFAFA;
+			text-align: center;
+			z-index: 100500;
+		}
+		#login-screen img {
+			position:absolute;
+			left:50%;
+			top:50%;
+			margin:-70px 0 0 -50px;
+			width: 100px;
+			height: 100px;
+		}
+		#login-screen div {
+			margin-top: 10%;
+		}
 	</style>
 	
 	<script type="text/javascript">
@@ -214,6 +239,12 @@
 
 
 <body>
+
+		<div id="login-screen">
+			<div>Начните после входа:</div>
+			<img onClick="VK.Auth.login(authInfo);" src="images/vk.svg">
+		</div>
+
 	<paper-toolbar>
 		<div style="width: 100%;" class="container flex-horizontal">
 			<div style="font-size: 36px;">Huesosnya</div>
@@ -342,12 +373,13 @@
 				init(response);
 			}
 			else {
-				VK.Auth.login(authInfo);
+				$("#login-screen").css("display", "blok");
 			}
 		});
 		function authInfo(response) {
 			if (response.session) {
 				init(response);
+				$("#login-screen").css("display", "none");
 			} else {
 				alert('Unable to authorize');
 			}

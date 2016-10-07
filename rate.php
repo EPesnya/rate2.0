@@ -19,10 +19,19 @@ $q2 = MYSQL_QUERY("SELECT * FROM users WHERE user_id=$li");
 $t2 = mysql_fetch_assoc($q1);
 $lr = $t2["rating"];
 
-$ew = 1 / (1 + pow(10, (($wr - $lr) / 400.0)));
-$nrw = $wr + 20 * (1 - $ew);
-$el = 1 / (1 + pow(10, (($lr - $wr) / 400.0)));
-$nrl = $wr + 20 * (0 - $el);
+
+$ew = 1 / (float)(1 + pow(10, (abs($wr - $lr) / 400.0)));
+$kw = 20;
+if ($wr > 2400) {
+	$kw = 10;
+}
+$nrw = $wr + $kw * (1 - $ew);
+$el = 1 / (float)(1 + pow(10, (abs($lr - $wr) / 400.0)));
+$kl = 20;
+if ($lr > 2400) {
+	$kl = 10;
+}
+$nrl = $lr + $kl * (0 - $el);
 
 MYSQL_QUERY("UPDATE users SET rating='$nrw' WHERE user_id=$wi");
 MYSQL_QUERY("UPDATE users SET rating='$nrl' WHERE user_id=$li");
