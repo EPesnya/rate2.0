@@ -227,7 +227,7 @@
 
 <body>
 	<div id="login-screen">
-		<div>ÐÐ°Ñ‡Ð½Ð¸Ñ‚Ðµ Ð¿Ð¾ÑÐ»Ðµ Ð²Ñ…Ð¾Ð´Ð°:</div>
+		<div>Войдите чтобы начать:</div>
 		<img onClick="VK.Auth.login(authInfo);" src="vk.svg">
 	</div>
 	<div id="navLayout" style="container">
@@ -276,14 +276,14 @@
 	<div id="gRating">
 		<div id="rateCanvas">
 			<?php
-				$hostname = "localhost";
-				$username = "epesnya";
-				$password = "qwerty123";
-				$dbName = "testbd";
+				$hostname = "mysql.hostinger.ru";
+				$username = "u553691087_evg";
+				$password = "WKA0dhPXoO";
+				$dbName = "u553691087_users";
 
 				$mysqli = new mysqli($hostname, $username, $password, $dbName);
 
-				$cur_query = mysqli_query($mysqli, "SELECT * FROM users ORDER BY rating LIMIT 15");
+				$cur_query = mysqli_query($mysqli, "SELECT * FROM users ORDER BY rating DESC LIMIT 15");
 				while ($selected_data = mysqli_fetch_assoc($cur_query)) {
 					echo "<div class=\"rating-row\"><div id=\"rInfo\"><div class=\"ratingImg\" style=\"background-image: url(".$selected_data['photo'].")\"></div><a href=\"https://vk.com/id".$selected_data[user_id]."\">".$selected_data['first_name']." ".$selected_data['last_name']."</a></div><div id=\"ratingR\">".$selected_data['rating']."</div></div>";
 				}
@@ -358,7 +358,7 @@
 					});
 				} 
 			});	
-
+			generatePair();
 		};
 
 		function logOut() {
