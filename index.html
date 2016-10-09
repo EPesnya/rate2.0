@@ -179,12 +179,15 @@
 			border-top-left-radius: 3px;
 			border-top-right-radius: 3px;
 			text-align: center;
+			padding: 2%;
 			/*overflow-y: scroll; */  
 		}
 		.rating-row {
 			font-size: 2em;
 			margin: 0 auto;
-			float: left;
+			display: flex;
+			align-items: center;
+			height: 7vw;
 		}
 		@media screen and (min-width: 1024px) {
 			#rateCanvas {
@@ -199,6 +202,19 @@
 		}
 		li {
 			float:left;
+		}
+		.ratingImg {
+			overflow: hidden;
+			background-size:cover;
+			width: 5vw;
+			margin-left: 1.5vw;
+			margin-right: 1.5vw; 
+		}
+		.rating-row #rInfo {
+			display: flex;
+			align-items: center;
+			list-style-type: none;
+			flex: auto;	
 		}
 	</style>
 
@@ -240,9 +256,9 @@
 			</div>
 			<div class="col-md-2">
 				<div id="slogan">
-					<div id="choose">Ð’Ñ‹Ð±ÐµÑ€Ð¸</div>
-					<div id="themost">Ð¡ÐÐœÐžÐ“Ðž</div>
-					<div id="worst">Ñ…ÑƒÐµÑÐ¾ÑÐ½Ð¾Ð³Ð¾</div>
+					<div id="choose">С кем</div>
+					<div id="themost">бы</div>
+					<div id="worst">потусил?</div>
 				</div>
 				<hr>
 				<div id="cusButton">
@@ -260,144 +276,138 @@
 	<div id="gRating">
 		<div id="rateCanvas">
 			<?php
-			$hostname = "localhost";
-			$username = "epesnya";
-			$password = "qwerty123";
-			$dbName = "testbd";
+				$hostname = "localhost";
+				$username = "epesnya";
+				$password = "qwerty123";
+				$dbName = "testbd";
 
-			$mysqli = new mysqli($hostname, $username, $password, $dbName);
+				$mysqli = new mysqli($hostname, $username, $password, $dbName);
 
-			$cur_query = mysqli_query($mysqli, "SELECT * FROM users ORDER BY rating LIMIT 15");
-			while ($selected_data = mysqli_fetch_assoc($cur_query)) {
-			echo "<img src = \"".$selected_data['photo']."\"><div class=\"rating-row\">".$selected_data['first_name']." ".$selected_data['last_name']." ".$selected_data['rating']."</div>";
-		}
-		?>
+				$cur_query = mysqli_query($mysqli, "SELECT * FROM users ORDER BY rating LIMIT 15");
+				while ($selected_data = mysqli_fetch_assoc($cur_query)) {
+					echo "<div class=\"rating-row\"><div id=\"rInfo\"><div class=\"ratingImg\" style=\"background-image: url(".$selected_data['photo'].")\"></div><a href=\"https://vk.com/id".$selected_data[user_id]."\">".$selected_data['first_name']." ".$selected_data['last_name']."</a></div><div id=\"ratingR\">".$selected_data['rating']."</div></div>";
+				}
+			?>
+		</div>
 	</div>
 
 
-</div>
-<script type="text/javascript">
-	$('#gRating').hide();
-	$('#leftImg').css("height", $('#leftImg').width() + 'px');
-	$('#leftInfo').css("height", (0.7) * $('#leftImg').width() + 'px');
-	$('#leftInfo').css("top", (-0.5) * $('#leftImg').width() + 'px');
-	$('#leftInfo').css("padding-top", (0.55) * $('#leftImg').height() + 'px');
-	$('#rightImg').css("height", $('#rightImg').width() + 'px');
-	$('#rightInfo').css("height", (0.7) * $('#rightImg').width() + 'px');
-	$('#rightInfo').css("top", (-0.5) * $('#rightImg').width() + 'px');
-	$('#rightInfo').css("padding-top", (0.55) * $('#rightImg').height() + 'px');
-	$('#cusButton').css("height", $('#cusButton').width() / 2.0 + 'px');
-	$('.col-md-4').css("height", "0px");
+	<script type="text/javascript">
+		$('#gRating').hide();
+		$('#leftImg').css("height", $('#leftImg').width() + 'px');
+		$('#leftInfo').css("height", (0.7) * $('#leftImg').width() + 'px');
+		$('#leftInfo').css("top", (-0.5) * $('#leftImg').width() + 'px');
+		$('#leftInfo').css("padding-top", (0.55) * $('#leftImg').height() + 'px');
+		$('#rightImg').css("height", $('#rightImg').width() + 'px');
+		$('#rightInfo').css("height", (0.7) * $('#rightImg').width() + 'px');
+		$('#rightInfo').css("top", (-0.5) * $('#rightImg').width() + 'px');
+		$('#rightInfo').css("padding-top", (0.55) * $('#rightImg').height() + 'px');
+		$('#cusButton').css("height", $('#cusButton').width() / 2.0 + 'px');
+		$('.col-md-4').css("height", "0px");
 
-	var guys = [];
-	guys = $('.rating-row').toArray();
-	for(var i = 0; i < guys.length; i++) {
-		if(i < 3) {
-					//$('.rating-row:eq(' + i + ')>img').css("border-radius", "50%");
-					$('.rating-row:eq(' + i + ')').css("width", "33.333333%");
-				} else if(i < 8) {
-					$('.rating-row:eq(' + i + ')').css("width", "20%");
-				} else {
-					$('.rating-row:eq(' + i + ')').css("width", "14.2857142%");
-				}
-				$('.rating-row:eq(' + i + ')').css("height", '500px');
-			}
+		var guys = [];
+		guys = $('.rating-row').toArray();
+		for(var i = 0; i < guys.length; i++) {
+			$('.rating-row:eq(' + i + ')').prepend((i + 1) + '. ');
+			$('.ratingImg:eq(' + i + ')').css("border-radius", "50%");
+			$('.ratingImg:eq(' + i + ')').css("height", $('.ratingImg:eq(' + i + ')').width() + 'px');
+		}
 
-			var vkid1;
-			var vkid2;
+		var vkid1;
+		var vkid2;
 
-			var generatePair = function(){ 
-				VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-					if(r.response) { 
-						VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_200, photo_400_orig, domain'}, function(res) { 
-							var id1 = Math.round(Math.random() * res.response.length); 
-							var id2 = Math.round(Math.random() * res.response.length); 
-							vkid1 = res.response[id1].uid;
-							vkid2 = res.response[id2].uid;
-							while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
-						/////////
-						if (typeof res.response[id1].photo_400_orig != "undefined")
-							$('#leftImg').css("backgroundImage", "url(" + res.response[id1].photo_400_orig + ")");
-						else $('#leftImg').css("backgroundImage", "url(" + res.response[id1].photo_200 + ")");
-						/////////
-						if (typeof res.response[id2].photo_400_orig != "undefined")
-							$('#rightImg').css("backgroundImage", "url(" + res.response[id2].photo_400_orig + ")"); 
-						else 
-							$('#rightImg').css("backgroundImage", "url(" + res.response[id2].photo_200 + ")");
-						////////
-						$('#leftInfo').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
-						$('#leftInfo').attr("href", "https://vk.com/" + res.response[id1].domain);
-						$('#rightInfo').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
-						$('#rightInfo').attr("href", "https://vk.com/" + res.response[id2].domain);
+		var generatePair = function(){ 
+			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+				if(r.response) { 
+					VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_200, photo_400_orig, domain'}, function(res) { 
+						var id1 = Math.round(Math.random() * res.response.length); 
+						var id2 = Math.round(Math.random() * res.response.length); 
+						vkid1 = res.response[id1].uid;
+						vkid2 = res.response[id2].uid;
+						while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+					/////////
+					if (typeof res.response[id1].photo_400_orig != "undefined")
+						$('#leftImg').css("backgroundImage", "url(" + res.response[id1].photo_400_orig + ")");
+					else $('#leftImg').css("backgroundImage", "url(" + res.response[id1].photo_200 + ")");
+					/////////
+					if (typeof res.response[id2].photo_400_orig != "undefined")
+						$('#rightImg').css("backgroundImage", "url(" + res.response[id2].photo_400_orig + ")"); 
+					else 
+						$('#rightImg').css("backgroundImage", "url(" + res.response[id2].photo_200 + ")");
+					////////
+					$('#leftInfo').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
+					$('#leftInfo').attr("href", "https://vk.com/" + res.response[id1].domain);
+					$('#rightInfo').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
+					$('#rightInfo').attr("href", "https://vk.com/" + res.response[id2].domain);
+				});
+				} 
+			});
+		}
+
+		var init = function(response) {
+			userId = response.session.mid;
+			VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
+			{
+				$('#avatar').css("backgroundImage", "url(" + r.response[0].photo_50 + ")");
+				$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
+			});
+			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+				if(r.response) { 
+					VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
+						$.post("users.php", { resp: res.response }, function(data) {});
 					});
-					} 
-				});
+				} 
+			});	
+
+		};
+
+		function logOut() {
+			VK.Auth.logout();
+			$("#login-screen").show();
+		}
+
+		var userId;
+		VK.Auth.getLoginStatus(function(response){
+			if (response.session){
+				init(response);
+				generatePair();
 			}
-
-			var init = function(response) {
-				userId = response.session.mid;
-				VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
-				{
-					$('#avatar').css("backgroundImage", "url(" + r.response[0].photo_50 + ")");
-					$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
-				});
-				VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-					if(r.response) { 
-						VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-							$.post("users.php", { resp: res.response }, function(data) {});
-						});
-					} 
-				});	
-
-			};
-
-			function logOut() {
-				VK.Auth.logout();
+			else {
 				$("#login-screen").show();
 			}
+		});
 
-			var userId;
-			VK.Auth.getLoginStatus(function(response){
-				if (response.session){
-					init(response);
-					generatePair();
-				}
-				else {
-					$("#login-screen").show();
-				}
+		function authInfo(response) {
+			if (response.session) {
+				init(response);
+				$("#login-screen").hide();
+			} else {
+				alert('Unable to authorize');
+			}
+		}
+
+		cusButton.onclick = generatePair;
+		function gRatingClick() {
+			$("#mainContent").hide();	
+			$("#gRating").show();
+		}
+		function rateClick() {
+			$("#mainContent").show();
+			$("#gRating").hide();
+		}
+		function chooseLeft() {
+			$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {}).fail(function() {
+				alert( "error" );
 			});
+			generatePair();
+		}
+		function chooseRight() {
+			$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {}).fail(function() {
+				alert( "error" );
+			});
+			generatePair();
+		}
+	</script>
+</body>
 
-			function authInfo(response) {
-				if (response.session) {
-					init(response);
-					$("#login-screen").hide();
-				} else {
-					alert('Unable to authorize');
-				}
-			}
-
-			cusButton.onclick = generatePair;
-			function gRatingClick() {
-				$("#mainContent").hide();	
-				$("#gRating").show();
-			}
-			function rateClick() {
-				$("#mainContent").show();
-				$("#gRating").hide();
-			}
-			function chooseLeft() {
-				$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {}).fail(function() {
-					alert( "error" );
-				});
-				generatePair();
-			}
-			function chooseRight() {
-				$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {}).fail(function() {
-					alert( "error" );
-				});
-				generatePair();
-			}
-		</script>
-	</body>
-
-	</html>		
+</html>		
