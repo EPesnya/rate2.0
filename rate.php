@@ -1,22 +1,20 @@
 <?
 
-$hostname = "mysql.hostinger.ru";
-$username = "u553691087_evg";
-$password = "WKA0dhPXoO";
-$dbName = "u553691087_users";
+$hostname = "localhost";
+$username = "epesnya";
+$password = "qwerty123";
+$dbName = "testbd";
 
-$wi = $_POST['winner'];
-$li = $_POST['loser'];
+$wi = $_POST["winner"];
+$li = $_POST["loser"];
 
-MYSQL_CONNECT($hostname,$username,$password) OR DIE("Не могу создать соединение ");
-@mysql_select_db("$dbName") or die("Не могу выбрать базу данных ");
-mysql_set_charset("utf8"); 
+$mysqli = new mysqli($hostname, $username, $password, $dbName);
 
-$q1 = MYSQL_QUERY("SELECT * FROM users WHERE user_id=$wi");
-$t1 = mysql_fetch_assoc($q1);
+$q1 = mysqli_query($mysqli, "SELECT * FROM users WHERE user_id=$wi");
+$t1 = $q1->fetch_assoc();
 $wr = $t1["rating"];
-$q2 = MYSQL_QUERY("SELECT * FROM users WHERE user_id=$li");
-$t2 = mysql_fetch_assoc($q1);
+$q2 = mysqli_query($mysqli, "SELECT * FROM users WHERE user_id=$li");
+$t2 = $q2->fetch_assoc();
 $lr = $t2["rating"];
 
 
@@ -33,8 +31,8 @@ if ($lr > 2400) {
 }
 $nrl = $lr + $kl * (0 - $el);
 
-MYSQL_QUERY("UPDATE users SET rating='$nrw' WHERE user_id=$wi");
-MYSQL_QUERY("UPDATE users SET rating='$nrl' WHERE user_id=$li");
+mysqli_query($mysqli, "UPDATE users SET rating='$nrw' WHERE user_id=$wi");
+mysqli_query($mysqli, "UPDATE users SET rating='$nrl' WHERE user_id=$li");
 
-MYSQL_CLOSE();
+mysqli_close($mysqli);
 ?>

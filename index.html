@@ -1,206 +1,144 @@
-<!DOCTYPE html>
-
-<html lang="en">
+<html>
 
 <head>
 
-	<title>Huesosnya</title>
-
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-	<meta name="mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-
-	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="http://code.jquery.com/jquery-latest.min.js"
-	type="text/javascript"></script>
-	<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
-	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
-
-	<link rel="import" href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
-	<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
-	<link rel="import" href="bower_components/iron-icons/iron-icons.html">
-	<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-	<link rel="import" href="bower_components/paper-styles/color.html">
-	<link rel="import" href="bower_components/paper-card/paper-card.html">
-	<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
-	<link rel="import" href="bower_components/paper-button/paper-button.html">
-	<link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
-	<link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
-	<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
-
-
-	<link rel="import" href="bower_components/paper-styles/demo.css">
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Eczar:800" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Dosis:300" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
 
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-	<style is="custom-style">
-		html {
-			font-family: 'Catamaran', sans-serif;
+	<style>
+		body {
+			background: url("bg.jpg") no-repeat;
+			background-size: cover;
 		}
-		body { 
-			font-family: 'Catamaran'; 
-			background-color: #f5cedb;
-		}
-		paper-drawer-panel {
-			--paper-drawer-panel-main-container: {
-				background: #fafafa;
-			};
-			--paper-drawer-panel-drawer-container:{
-				border-right: 1px solid #e5e5e5;
-			};
-		}
-		paper-toolbar {
-			--paper-toolbar-background: #E91E63;
-			font-size: 2em;
-		}
-		.drawer-content {
-			position: relative;
-		}
-		.drawer-content paper-card {
-			--paper-card:{
-				width: 100%;
-			};
-			--paper-card-background-color: #90CAF9;
-		}
-		.drawer-content paper-card iron-image {
-			margin: 12px 12px;
-			width: 80px;
-			height: 80px;
-			border-radius: 80px;
-			background-color: lightgray;
+		#avatar {
+			width: 50px;
+			height: 50px;
+			background-color: #EF9A9A;
+			border-radius: 25px;
+			margin: 0;
+			padding: 0;
 			float: left;
+			flex: flex;
 		}
-		.drawer-content nav div {
-			color: #424242;
-		}
-		.drawer-content nav div span {
-			padding-left: 8px;
-		}
-		#leftHui {
+		#HeaderName {
+			color: #fff;
+			font-size: 36px;
 			float: left;
-		}
-		#rightHui {
-			float: right;
-		}
-		paper-scroll-header-panel {
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background-color: var(--paper-grey-200, #eee);
-			--paper-scroll-header-panel-full-header: {
-				background-image: url(images/bg1.jpg);
-				background-position: left center;
-			};
-			--paper-scroll-header-panel-condensed-header: {
-				background-color: var(--paper-deep-purple-500);
-			};
-		}
-		paper-icon-button {
-			--paper-icon-button-ink-color: white;
-		}
-		paper-toolbar.tall {
-			background-color: transparent;
-		}
-		paper-toolbar.tall .title {
-			font-size: 40px;
-			margin-left: 60px;
-			-webkit-transform-origin: left center;
-			transform-origin: left center;
-		}
-		.content {
-			padding: 8px;
-		}
-		.spacer {
-			@apply(--layout-flex);
-		}
-		.flex-horizontal-with-ratios {
-			@apply(--layout-horizontal);
-		}
-		.flex-horizontal-with-ratios div iron-image{
-			width: 200px;
-			height: 200px;
-			border-radius: 200px;
-			background-color: lightgray;
-		}
-		.flexchild {
-			@apply(--layout-flex-3);
-		}
-		.flex2child {
-			@apply(--layout-flex-3);
-		}
-		.flex3child {
-			@apply(--layout-flex-3);
-		}
-		#rightImg, #leftImg {
-			height: 400px;
-			width: 400px;
-			border-radius: 200px;
-			left: 0;
-			opacity: 1;
-			position: relative;
-			-webkit-transition: left 1s ease-out 0.5s;
-			-moz-transition: left 1s ease-out 0.5s;
-			-o-transition: left 1s ease-out 0.5s;
-			transition: left 1s ease-out 0.5s;
+			flex: auto;
 		}
 		#userName {
-			vertical-align: middle;
-			font-family: 'Catamaran';
-			font-size: 0.7em;
-		}
-		#userAvatar {
-			border-radius: 50px;
+			color: #fff;
+			font-size: 24px;
 			margin-right: 10px;
-			margin-left: 10px; 
+			margin-left: 10px;
 		}
-		.col-xs-6 {
+		#leftImg, #rightImg {
+			background-color: #EF9A9A;
+			border-radius: 50%;
+			width: 90%;
+			z-index: 100;
+			position: relative;
+			margin: 0 auto;
+			transform: scale(1);
+			transition: all .5s;
+			background-size: cover;
+			border: solid white;
+			border-width: 50%;
+		}
+		#leftImg:hover, #rightImg:hover {
+			transform: scale(1.03);
+		}
+		#navBar {
+			padding-right: 8.3333333%;
+			padding-left: 8.3333333%;
+			padding-top: 1.14583333%;
+			padding-bottom: 1.14583333%;
+			display: flex;
+			align-items: center;
+		}
+		#leftInfo, #rightInfo {
+			background-color: white;
+			position: relative;
+			border-bottom-right-radius: 10%;
+			border-bottom-left-radius: 10%;
+			width: 50%;
+			font-size: 1.4em;
+			z-index: 0;
+			margin: 0 auto;
+			display: flex;
+			justify-content: center;
+			padding-bottom: 10px;
+		}
+		#cusButton {
+			position: relative;
+			background-color: red;
+			border-radius: 5%;
+			margin: 0 auto;
+			width: 62.5%;
+			display: flex;
+			color: #fff;
+			font-size: 1.4em;
+			justify-content: center;
+			align-items: center;
+			transition: all .5s;
+		}
+		#cusButton:hover {
+			background-color: #fff;
+			color: #f00;
+		}
+		#slogan {
+			width: 100%;
+		}
+		#choose, #themost, #worst {
+			margin: 0 auto;
+			color: white;
 			text-align: center;
 		}
-		.row {
-			text-align: center;
-			padding-top: 16px;
+		#choose{
+			font-size: 2.8em;
 		}
-		#buttons {
-			margin: auto 0 ;
+		#themost {
+			font-size: 1em;
 		}
-		#userInfo {
-			width: 500px;
+		#worst {
+			font-size: 2.6em;
 		}
-		b {
-			font-size: 54px;
+		.top-button {
+			font-size: 1.2em;
+			margin-right: 20px;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			line-height: 1;
+			display: inline-block;
 		}
-		paper-toolbar {
+		.top-button:hover {
+			color: #ffeb3b;
+			text-decoration: none;		
 		}
-		.flex-horizontal {
-			@apply(--layout-horizontal);
+		.top-button:after {
+			display: block;
+			margin-top: 0.1em;
+			content: "";
+			height: 2px;
+			width: 0%;
+			background-color: #ffeb3b;
+			transition: width .3s ease-in-out;
 		}
-		.flexchild {
-			@apply(--layout-flex);
+		.top-button:hover:after,
+		.top-button:focus:after {
+			width: 100%;
 		}
-		.vertical-centred {
-			@apply(--layout-self-center);
-		}
-		a {
-			font-size: 20px;
-			color: black;
-			opacity: .87;
-		}
-		.menuLinks {
-			font-size: 16px;
-		}
-		.moveLeft {
-			opacity: 0.5;
-			left: -100px;
+		#mainContent {
+			padding-top: 4%;
 		}
 		#login-screen {
 			display: none;
@@ -227,167 +165,226 @@
 		#login-screen div {
 			margin-top: 10%;
 		}
+		#gRating {
+			display: flex;
+			align-items: center;
+			justify-content: center; 
+		}
+		#rateCanvas {
+			position: absolute;
+			width: 100%;
+			height: 70%;
+			bottom: 0;
+			margin-top: 5%;
+			background-color: #fff;
+			border-top-left-radius: 1%;
+			border-top-right-radius: 1%;
+			text-align: center;
+			overflow-y: scroll;   
+		}
+		.rating-row {
+			font-size: 2em;
+			overflow: fidden;
+			margin: 0 auto;
+			float: left;
+		}
+		@media screen and (min-width: 1024px) {
+			#rateCanvas {
+				width: 70%;
+				margin: 0 auto;
+			}
+		}
 	</style>
-	
+
 	<script type="text/javascript">
 		VK.init({
 			apiId: 5148155
 		});
 	</script>
-
 </head>
 
-
 <body>
-
-		<div id="login-screen">
-			<div>Начните после входа:</div>
-			<img onClick="VK.Auth.login(authInfo);" src="images/vk.svg">
-		</div>
-
-	<paper-toolbar>
-		<div style="width: 100%;" class="container flex-horizontal">
-			<div style="font-size: 36px;">Huesosnya</div>
-			<div class="flexchild"></div>
-			<div id="userInfo" class="container flex-horizontal">
-				<div class="flexchild"></div>
-				<div class="vertical-centred" id="userName"></div>
-				<iron-image style="float: right;" id="userAvatar" preload></iron-image>
-			</div>
-		</div>	
-
-	</paper-toolbar>
-
-	<div style="text-align: center;" class="drawer-content"> 
-	<!--
-			<div>
-				<iron-icon icon="icons:language"></iron-icon><span>Global rating</span>
-				<iron-icon icon="icons:cached"></iron-icon><span>Local rating</span>
-			</div>
-			<hr>-->
-			<div main id="main">
-				<div class="container-fluid">
-					<div class="row">
-						<div id="buttons">
-							<b style="line-height: 54px; font-family: 'Eczar';">Choose</b><br> 
-							<b style="font-family: 'Catamaran'; font-size:16px; position: relative; top: -7px;">THE MOST</b><br>
-							<b style="text-decoration: underline;font-size:42px; position: relative; top: -7px; line-height: 32px; font-family: 'Eczar';">husesosious</b>
-						</div>
-					</div>
-				</div>
-				<div class="row" style="position: relative; top: -30px;">
-					<div class="col-md-5">
-						<div class="flexchild"><iron-image onClick="chooseLeft()" id="leftImg" preload src=""></iron-image></div>
-						<a id="leftName"></a>
-					</div>
-					<div style="height: 350px; position:relative; top: 16px;" class="col-md-2">
-						<paper-button id="statusB" style="font-family: 'Catamaran'; margin-top:15px;background-color: #3f51b5; color: #fff;">Skip</paper-button><br>
-						<div style="font-family: 'Catamaran'; margin-top:15px; margin-bottom:15px; text-align: left;">
-							<paper-checkbox>Show ratings</paper-checkbox>
-							<paper-checkbox>Rate people you may know</paper-checkbox>
-						</div>
-						<hr style="margin-bottom:15px;">
-
-						<div style="font-family: 'Catamaran'; margin-top:15px; margin-bottom:15px; text-align: left;">
-							<iron-icon icon="icons:language"></iron-icon><a class="menuLinks" href="#"> Global rating</a><br>
-							<iron-icon icon="icons:cached"></iron-icon><a class="menuLinks" href="#"> Local rating</a>
-						</div>
-					</div>
-					<div class="col-md-5">
-						<div class="flex3child"><iron-image onClick="chooseRight()" id="rightImg" preload src=""></iron-image></div>
-						<a id="rightName"></a>
-					</div>
-				</div>
-			</div>
+	<div id="login-screen">
+		<div>ÐÐ°Ñ‡Ð½Ð¸Ñ‚Ðµ Ð¿Ð¾ÑÐ»Ðµ Ð²Ñ…Ð¾Ð´Ð°:</div>
+		<img onClick="VK.Auth.login(authInfo);" src="vk.svg">
 	</div>
-	<script>
-		var vkid1;
-		var vkid2;
-	    var title = document.querySelector('.title');
-	    addEventListener('paper-header-transform', function(e) {
-	    	var d = e.detail;
-	    	var m = d.height - d.condensedHeight;
-	    	var scale = Math.max(0.75, (m - d.y) / (m / 0.25)  + 0.75);
-	    	Polymer.Base.transform('scale(' + scale + ') translateZ(0)', title);
-	    });
 
+	<div id="navBar">
+		<b id="HeaderName"><img src="shock.svg" style="height:1.5em;">ShockRates</b>
+		<span class="top-button" onclick="rateClick();">Rate</span>
+		<span class="top-button" onclick="gRatingClick();">Global rating</span>
+		<span class="top-button">Local rating</span>
+		<b id="userName">User Name</b>
+		<div id="avatar" onclick="logOut();"></div>
+	</div>
 
-		var generatePair = function(){ 
-			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-				if(r.response) { 
-					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain, photo_200'}, function(res) { 
-						var id1 = Math.round(Math.random() * res.response.length); 
-						var id2 = Math.round(Math.random() * res.response.length); 
-						vkid1 = id1;
-						vkid2 = id2;
-						while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
-						$('#leftImg').addClass("moveLeft");
-						if (res.response[id1].photo_400_orig)
-						leftImg.src = res.response[id1].photo_400_orig;
-						else leftImg.src = res.response[id1].photo_200;
-						if (res.response[id1].photo_400_orig) 
-						rightImg.src = res.response[id2].photo_400_orig; 
-						else leftImg.src = res.response[id2].photo_200;
-						$('#leftName').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
-						$('#leftName').attr("href", "https://vk.com/" + res.response[id1].domain);
-						$('#rightName').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
-						$('#rightName').attr("href", "https://vk.com/" + res.response[id2].domain);
-					});
-				} 
-			});
+	<div class="container-fluid" id="mainContent">
+		<div class="row" media="min-width:820px">
+			<div class="col-md-1"></div>
+			<div class="col-md-4">
+				<div id="leftImg" onClick="chooseLeft();"></div>
+				<div id="leftInfo">Top 1 huesos</div>
+			</div>
+			<div class="col-md-2">
+				<div id="slogan">
+					<div id="choose">Ð’Ñ‹Ð±ÐµÑ€Ð¸</div>
+					<div id="themost">Ð¡ÐÐœÐžÐ“Ðž</div>
+					<div id="worst">Ñ…ÑƒÐµÑÐ¾ÑÐ½Ð¾Ð³Ð¾</div>
+				</div>
+				<hr>
+				<div id="cusButton">
+					Button
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div id="rightImg" onClick="chooseRight();"></div>
+				<div id="rightInfo">Top 2 huesos</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</div>
+	
+	<div id="gRating">
+		<div id="rateCanvas">
+			<?php
+			$hostname = "localhost";
+			$username = "epesnya";
+			$password = "qwerty123";
+			$dbName = "testbd";
+
+			$mysqli = new mysqli($hostname, $username, $password, $dbName);
+
+			$cur_query = mysqli_query($mysqli, "SELECT * FROM users ORDER BY rating LIMIT 15");
+			while ($selected_data = mysqli_fetch_assoc($cur_query)) {
+			echo "<img src = \"".$selected_data['photo']."\"><div class=\"rating-row\">".$selected_data['first_name']." ".$selected_data['last_name']." ".$selected_data['rating']."</div>";
 		}
+		?>
+	</div>
+</div>
 
-		var init = function(response) {
-			userId = response.session.mid;
-			VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
-			{
-				userAvatar.src = r.response[0].photo_50;
-				$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
-			});
-			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-				if(r.response) { 
-					var s;
-					for(var i = 0; i < r.response.length; i++) {
-						s += r.response[i].uid + ',';
-					}
-					VK.Api.call('users.get', {user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-						$.post("users.php", { resp: res.response }, function(data) {});
-					});
-				} 
-			});	
 
-		};
+<script type="text/javascript">
+	$('#gRating').hide();
+	$('#leftImg').css("height", $('#leftImg').width() + 'px');
+	$('#leftInfo').css("height", (0.7) * $('#leftImg').width() + 'px');
+	$('#leftInfo').css("top", (-0.5) * $('#leftImg').width() + 'px');
+	$('#leftInfo').css("padding-top", (0.55) * $('#leftImg').height() + 'px');
+	$('#rightImg').css("height", $('#rightImg').width() + 'px');
+	$('#rightInfo').css("height", (0.7) * $('#rightImg').width() + 'px');
+	$('#rightInfo').css("top", (-0.5) * $('#rightImg').width() + 'px');
+	$('#rightInfo').css("padding-top", (0.55) * $('#rightImg').height() + 'px');
+	$('#cusButton').css("height", $('#cusButton').width() / 2.0 + 'px');
+	$('.col-md-4').css("height", "0px");
 
-		var userId;
-		VK.Auth.getLoginStatus(function(response){
-			if (response.session){
-				init(response);
+	var guys = [];
+	guys = $('.rating-row').toArray();
+	for(var i = 0; i < guys.length; i++) {
+		if(i < 3) {
+					//$('.rating-row:eq(' + i + ')>img').css("border-radius", "50%");
+					$('.rating-row:eq(' + i + ')').css("width", "33.333333%");
+				} else if(i < 8) {
+					$('.rating-row:eq(' + i + ')').css("width", "20%");
+				} else {
+					$('.rating-row:eq(' + i + ')').css("width", "14.2857142%");
+				}
+				$('.rating-row:eq(' + i + ')').css("height", '500px');
 			}
-			else {
+
+			var vkid1;
+			var vkid2;
+
+			var generatePair = function(){ 
+				VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+					if(r.response) { 
+						VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_200, photo_400_orig, domain'}, function(res) { 
+							var id1 = Math.round(Math.random() * res.response.length); 
+							var id2 = Math.round(Math.random() * res.response.length); 
+							vkid1 = res.response[id1].uid;
+							vkid2 = res.response[id2].uid;
+							while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+						/////////
+						if (typeof res.response[id1].photo_400_orig != "undefined")
+							$('#leftImg').css("backgroundImage", "url(" + res.response[id1].photo_400_orig + ")");
+						else $('#leftImg').css("backgroundImage", "url(" + res.response[id1].photo_200 + ")");
+						/////////
+						if (typeof res.response[id2].photo_400_orig != "undefined")
+							$('#rightImg').css("backgroundImage", "url(" + res.response[id2].photo_400_orig + ")"); 
+						else 
+							$('#rightImg').css("backgroundImage", "url(" + res.response[id2].photo_200 + ")");
+						////////
+						$('#leftInfo').text(res.response[id1].first_name + ' ' + res.response[id1].last_name); 
+						$('#leftInfo').attr("href", "https://vk.com/" + res.response[id1].domain);
+						$('#rightInfo').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
+						$('#rightInfo').attr("href", "https://vk.com/" + res.response[id2].domain);
+					});
+					} 
+				});
+			}
+
+			var init = function(response) {
+				userId = response.session.mid;
+				VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
+				{
+					$('#avatar').css("backgroundImage", "url(" + r.response[0].photo_50 + ")");
+					$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
+				});
+				VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+					if(r.response) { 
+						VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
+							$.post("users.php", { resp: res.response }, function(data) {});
+						});
+					} 
+				});	
+
+			};
+
+			function logOut() {
+				VK.Auth.logout();
 				$("#login-screen").show();
 			}
-		});
-		function authInfo(response) {
-			if (response.session) {
-				init(response);
-				$("#login-screen").hide();
-			} else {
-				alert('Unable to authorize');
+
+			var userId;
+			VK.Auth.getLoginStatus(function(response){
+				if (response.session){
+					init(response);
+					generatePair();
+				}
+				else {
+					$("#login-screen").show();
+				}
+			});
+
+			function authInfo(response) {
+				if (response.session) {
+					init(response);
+					$("#login-screen").hide();
+				} else {
+					alert('Unable to authorize');
+				}
 			}
-		}
 
-	    statusB.onclick = generatePair;
+			cusButton.onclick = generatePair;
+			function gRatingClick() {
+				$("#mainContent").hide();	
+				$("#gRating").show();
+			}
+			function rateClick() {
+				$("#mainContent").show();
+				$("#gRating").hide();
+			}
+			function chooseLeft() {
+				$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {}).fail(function() {
+					alert( "error" );
+				});
+				generatePair();
+			}
+			function chooseRight() {
+				$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {}).fail(function() {
+					alert( "error" );
+				});
+				generatePair();
+			}
+		</script>
+	</body>
 
-	    function chooseLeft() {
-	    	$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {});
-	    	generatePair();
-	    }
-	    function chooseRight() {
-	    	$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {});
-	    	generatePair();
-	    }
-	</script>
-</body>
-
-</html>
-
+</html>		

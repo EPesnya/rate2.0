@@ -1,32 +1,16 @@
 <?
+	$hostname = "mysql.hostinger.ru";
+	$username = "u553691087_evg";
+	$password = "WKA0dhPXoO";
+	$dbName = "u553691087_users";
 
-$hostname = "localhost";
-$username = "epesnya";
-$password = "qwerty123";
-$dbName = "testbd";
+	$mysqli = new mysqli($hostname, $username, $password, $dbName);
 
-$wi = $_POST['winner'];
-$li = $_POST['loser'];
+	$cur_query = mysqli_query($mysqli, "SELECT TOP 15 * FROM users");
+	
+	while ($selected_data = $cur_query->fetch_assoc()) {
+		echo  $selected_data['first_name']." ".$selected_data['last_name']." ".$selected_data['rating'];
+	}
 
-MYSQL_CONNECT($hostname,$username,$password) OR DIE("Не могу создать соединение ");
-@mysql_select_db("$dbName") or die("Не могу выбрать базу данных ");
-mysql_set_charset("utf8"); 
-
-$q1 = MYSQL_QUERY("SELECT * FROM users ORDER BY rating");
-$t1 = mysql_fetch_assoc($q1);
-$wr = $t1["rating"];
-
-echo "<table width='100%'>";
-echo "<tr><td>pole1</td><td>pole2</td><td>pole3</td><td>pole4</td></tr>";
-while ($row=mysql_fetch_array($myrow)){
-	$pole1=$row[0];
-	$pole2=$row[1];
-	$pole3=$row[2];
-	$pole4=$row[3];
-	 
-	echo "<tr><td>$pole1</td><td>$pole2</td><td>$pole3</td><td>$pole4</td></tr>";
-}
-echo "</table>";
-
-MYSQL_CLOSE();
+	mysqli_close($mysqli);
 ?>
