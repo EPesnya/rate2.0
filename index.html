@@ -3,15 +3,16 @@
 <head>
 
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
 	<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
 
-	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+	<!--<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>-->
 	
 	<style>
 		body {
@@ -19,6 +20,14 @@
 			background-size: cover;
 			background-attachment: fixed;
 			overflow-y: scroll;
+			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+			font-size: 14px;
+			line-height: 1.42857143;
+			color: #333;
+			background-color: #fff;
+			margin: 0;
+
+			display: block;
 		}
 		#navLayout {
 			position: fixed;
@@ -46,10 +55,28 @@
 			margin-right: 3vh;
 			margin-left: 3vh;
 		}
+		@media screen and (orientation: landscape) {
+			#leftImg, #rightImg {
+				width: 85%;
+			}
+			#leftInfo, #rightInfo {
+				width: 50%;
+			}
+		}
+		@media screen and (orientation: portrait) {
+			#leftImg, #rightImg {
+				width: 60%;
+			}
+			#leftInfo, #rightInfo {
+			width: 50%;
+			}
+			#someHr {
+				display: none;
+			}
+		}
 		#leftImg, #rightImg {
 			background-color: #EF9A9A;
 			border-radius: 50%;
-			width: 90%;
 			z-index: 100;
 			position: relative;
 			margin: 0 auto;
@@ -75,14 +102,14 @@
 			position: relative;
 			border-bottom-right-radius: 10%;
 			border-bottom-left-radius: 10%;
-			width: 50%;
-			font-size: 1.4em;
+			font-size: 4vh;
 			z-index: 0;
 			margin: 0 auto;
 			display: flex;
 			justify-content: center;
 			padding-bottom: 10px;
 		}
+
 		#cusButton {
 			position: relative;
 			background-color: red;
@@ -101,6 +128,7 @@
 			color: #f00;
 		}
 		#slogan {
+			margin-top: 10vh;
 			width: 100%;
 		}
 		#choose, #themost, #worst {
@@ -109,13 +137,13 @@
 			text-align: center;
 		}
 		#choose{
-			font-size: 2.8em;
+			font-size: 5vh;
 		}
 		#themost {
-			font-size: 1em;
+			font-size: 2vh;
 		}
 		#worst {
-			font-size: 2.6em;
+			font-size: 4vh;
 		}
 		.top-button {
 			font-size: 2.5vh;
@@ -189,10 +217,22 @@
 			align-items: center;
 			height: 7vw;
 		}
-		@media screen and (min-width: 1024px) {
+		@media screen and (orientation: landscape) {
 			#rateCanvas {
 				width: 85%;
 				margin: 5% auto 0;
+			}
+			.col-md-1 {
+				float: left;
+				width: 8.333333%;
+			}
+			.col-md-2 {
+				float: left;
+				width: 16.666667%;
+			}
+			.col-md-4 {
+				float: left;
+				width: 33.333333%;
 			}
 		}
 		ul {
@@ -215,6 +255,22 @@
 			align-items: center;
 			list-style-type: none;
 			flex: auto;	
+		}
+		.col-md-1 {
+			height: 5vh;
+		}
+		.col-md-2 {
+			height: 0vh;
+		}
+		.col-md-4 {
+			height: 35vh;
+		}
+		.col-md-1, .col-md-2, .col-md-4 {
+			position: relative;
+			min-height: 1px;
+		}
+		div {
+			display: block;
 		}
 	</style>
 
@@ -248,7 +304,7 @@
 	</div>
 
 	<div class="container-fluid" id="mainContent">
-		<div class="row" media="min-width:820px">
+		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-4">
 				<div id="leftImg" onClick="chooseLeft();"></div>
@@ -260,10 +316,7 @@
 					<div id="themost">бы</div>
 					<div id="worst">потусил?</div>
 				</div>
-				<hr>
-				<div id="cusButton">
-					Button
-				</div>
+				<hr id="someHr">
 			</div>
 			<div class="col-md-4">
 				<div id="rightImg" onClick="chooseRight();"></div>
@@ -276,55 +329,54 @@
 	<div id="gRating">
 		<div id="rateCanvas">
 			<?php
-				$hostname = "mysql.hostinger.ru";
-				$username = "u553691087_evg";
-				$password = "WKA0dhPXoO";
-				$dbName = "u553691087_users";
+			$hostname = "mysql.hostinger.ru";
+			$username = "u553691087_evg";
+			$password = "WKA0dhPXoO";
+			$dbName = "u553691087_users";
 
-				$mysqli = new mysqli($hostname, $username, $password, $dbName);
+			$mysqli = new mysqli($hostname, $username, $password, $dbName);
 
-				$cur_query = mysqli_query($mysqli, "SELECT * FROM users ORDER BY rating DESC LIMIT 15");
-				while ($selected_data = mysqli_fetch_assoc($cur_query)) {
-					echo "<div class=\"rating-row\"><div id=\"rInfo\"><div class=\"ratingImg\" style=\"background-image: url(".$selected_data['photo'].")\"></div><a href=\"https://vk.com/id".$selected_data[user_id]."\">".$selected_data['first_name']." ".$selected_data['last_name']."</a></div><div id=\"ratingR\">".$selected_data['rating']."</div></div>";
-				}
-			?>
-		</div>
-	</div>
-
-
-	<script type="text/javascript">
-		$('#gRating').hide();
-		$('#leftImg').css("height", $('#leftImg').width() + 'px');
-		$('#leftInfo').css("height", (0.7) * $('#leftImg').width() + 'px');
-		$('#leftInfo').css("top", (-0.5) * $('#leftImg').width() + 'px');
-		$('#leftInfo').css("padding-top", (0.55) * $('#leftImg').height() + 'px');
-		$('#rightImg').css("height", $('#rightImg').width() + 'px');
-		$('#rightInfo').css("height", (0.7) * $('#rightImg').width() + 'px');
-		$('#rightInfo').css("top", (-0.5) * $('#rightImg').width() + 'px');
-		$('#rightInfo').css("padding-top", (0.55) * $('#rightImg').height() + 'px');
-		$('#cusButton').css("height", $('#cusButton').width() / 2.0 + 'px');
-		$('.col-md-4').css("height", "0px");
-
-		var guys = [];
-		guys = $('.rating-row').toArray();
-		for(var i = 0; i < guys.length; i++) {
-			$('.rating-row:eq(' + i + ')').prepend((i + 1) + '. ');
-			$('.ratingImg:eq(' + i + ')').css("border-radius", "50%");
-			$('.ratingImg:eq(' + i + ')').css("height", $('.ratingImg:eq(' + i + ')').width() + 'px');
+			$cur_query = mysqli_query($mysqli, "SELECT * FROM users ORDER BY rating DESC LIMIT 15");
+			while ($selected_data = mysqli_fetch_assoc($cur_query)) {
+			echo "<div class=\"rating-row\"><div id=\"rInfo\"><div class=\"ratingImg\" style=\"background-image: url(".$selected_data['photo'].")\"></div><a href=\"https://vk.com/id".$selected_data[user_id]."\">".$selected_data['first_name']." ".$selected_data['last_name']."</a></div><div id=\"ratingR\">".$selected_data['rating']."</div></div>";
 		}
+		?>
+	</div>
+</div>
 
-		var vkid1;
-		var vkid2;
 
-		var generatePair = function(){ 
-			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-				if(r.response) { 
-					VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_200, photo_400_orig, domain'}, function(res) { 
-						var id1 = Math.round(Math.random() * res.response.length); 
-						var id2 = Math.round(Math.random() * res.response.length); 
-						vkid1 = res.response[id1].uid;
-						vkid2 = res.response[id2].uid;
-						while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
+<script type="text/javascript">
+	$('#gRating').hide();
+	$('#leftImg').css("height", $('#leftImg').width() + 'px');
+	$('#leftInfo').css("height", (0.15) * $('#leftImg').width() + 'px');
+	$('#leftInfo').css("top", (-0.5) * $('#leftImg').width() + 'px');
+	$('#leftInfo').css("padding-top", (0.55) * $('#leftImg').height() + 'px');
+	$('#rightImg').css("height", $('#rightImg').width() + 'px');
+	$('#rightInfo').css("height", (0.15) * $('#rightImg').width() + 'px');
+	$('#rightInfo').css("top", (-0.5) * $('#rightImg').width() + 'px');
+	$('#rightInfo').css("padding-top", (0.55) * $('#rightImg').height() + 'px');
+	$('#cusButton').css("height", $('#cusButton').width() / 2.0 + 'px');
+
+	var guys = [];
+	guys = $('.rating-row').toArray();
+	for(var i = 0; i < guys.length; i++) {
+		$('.rating-row:eq(' + i + ')').prepend((i + 1) + '. ');
+		$('.ratingImg:eq(' + i + ')').css("border-radius", "50%");
+		$('.ratingImg:eq(' + i + ')').css("height", $('.ratingImg:eq(' + i + ')').width() + 'px');
+	}
+
+	var vkid1;
+	var vkid2;
+
+	var generatePair = function(){ 
+		VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+			if(r.response) { 
+				VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_200, photo_400_orig, domain'}, function(res) { 
+					var id1 = Math.round(Math.random() * res.response.length); 
+					var id2 = Math.round(Math.random() * res.response.length); 
+					vkid1 = res.response[id1].uid;
+					vkid2 = res.response[id2].uid;
+					while(id2 == id1) id2 = Math.round(Math.random() * r.response.length); 
 					/////////
 					if (typeof res.response[id1].photo_400_orig != "undefined")
 						$('#leftImg').css("backgroundImage", "url(" + res.response[id1].photo_400_orig + ")");
@@ -340,74 +392,74 @@
 					$('#rightInfo').text(res.response[id2].first_name + ' ' + res.response[id2].last_name); 
 					$('#rightInfo').attr("href", "https://vk.com/" + res.response[id2].domain);
 				});
-				} 
-			});
-		}
+			} 
+		});
+	}
 
-		var init = function(response) {
-			userId = response.session.mid;
-			VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
-			{
-				$('#avatar').css("backgroundImage", "url(" + r.response[0].photo_50 + ")");
-				$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
-			});
-			VK.Api.call('friends.get', {user_id: userId}, function(r) { 
-				if(r.response) { 
-					VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
-						$.post("users.php", { resp: res.response }, function(data) {});
-					});
-				} 
-			});	
+	var init = function(response) {
+		userId = response.session.mid;
+		VK.Api.call('users.get', {user_id: userId, fields: 'photo_50'}, function(r)
+		{
+			$('#avatar').css("backgroundImage", "url(" + r.response[0].photo_50 + ")");
+			$('#userName').text(r.response[0].first_name + ' ' + r.response[0].last_name);
+		});
+		VK.Api.call('friends.get', {user_id: userId}, function(r) { 
+			if(r.response) { 
+				VK.Api.call('users.get', {lang: 0, user_ids: r.response, fields: 'photo_400_orig, domain'}, function(res) { 
+					$.post("users.php", { resp: res.response }, function(data) {});
+				});
+			} 
+		});	
+		generatePair();
+	};
+
+	function logOut() {
+		VK.Auth.logout();
+		$("#login-screen").show();
+	}
+
+	var userId;
+	VK.Auth.getLoginStatus(function(response){
+		if (response.session){
+			init(response);
 			generatePair();
-		};
-
-		function logOut() {
-			VK.Auth.logout();
+		}
+		else {
 			$("#login-screen").show();
 		}
+	});
 
-		var userId;
-		VK.Auth.getLoginStatus(function(response){
-			if (response.session){
-				init(response);
-				generatePair();
-			}
-			else {
-				$("#login-screen").show();
-			}
+	function authInfo(response) {
+		if (response.session) {
+			init(response);
+			$("#login-screen").hide();
+		} else {
+			alert('Unable to authorize');
+		}
+	}
+
+	cusButton.onclick = generatePair;
+	function gRatingClick() {
+		$("#mainContent").hide();	
+		$("#gRating").show();
+	}
+	function rateClick() {
+		$("#mainContent").show();
+		$("#gRating").hide();
+	}
+	function chooseLeft() {
+		$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {}).fail(function() {
+			alert( "error" );
 		});
-
-		function authInfo(response) {
-			if (response.session) {
-				init(response);
-				$("#login-screen").hide();
-			} else {
-				alert('Unable to authorize');
-			}
-		}
-
-		cusButton.onclick = generatePair;
-		function gRatingClick() {
-			$("#mainContent").hide();	
-			$("#gRating").show();
-		}
-		function rateClick() {
-			$("#mainContent").show();
-			$("#gRating").hide();
-		}
-		function chooseLeft() {
-			$.post("rate.php", { winner: vkid1, loser: vkid2 }, function(data) {}).fail(function() {
-				alert( "error" );
-			});
-			generatePair();
-		}
-		function chooseRight() {
-			$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {}).fail(function() {
-				alert( "error" );
-			});
-			generatePair();
-		}
-	</script>
+		generatePair();
+	}
+	function chooseRight() {
+		$.post("rate.php", { winner: vkid2, loser: vkid1 }, function(data) {}).fail(function() {
+			alert( "error" );
+		});
+		generatePair();
+	}
+</script>
 </body>
 
 </html>		
